@@ -25,7 +25,10 @@ export default class Blockchain {
         this.nextIndex++;
         
         return new Validation();
+    }
 
+    getBlock(hash: string) : Block | undefined {
+        return this.blocks.find(b => b.hash === hash);
     }
 
     isValid(): Validation{
