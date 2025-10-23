@@ -7,9 +7,7 @@ const PORT: number = 3000;
 
 const app = express();
 
-if (process.argv.includes("--run")) {
-    app.use(morgan('tiny'));
-}
+if (process.argv.includes("--run")) { app.use(morgan('tiny'))};
 
 app.use(express.json());
 
@@ -38,7 +36,9 @@ app.get('/blocks/:indexOrHash', (req, res, next) => {
 })
 
 app.post('/blocks', (req, res, next) => {
-    if (!req.body.hash === undefined) res.sendStatus(422);
+    if (!req.body.hash === undefined || req.body.hash === "" || !req.body.hash){
+        return res.sendStatus(422);
+    } 
 
     const block = new Block(req.body as Block);
     const validation = blockchain.addBlock(block);
@@ -51,12 +51,7 @@ app.post('/blocks', (req, res, next) => {
     }
 })
 
-if (process.argv.includes("--run")) {
-    app.listen(PORT, () => {
-        console.log(`Blockchain server is running at ${PORT}`);
-    })
-}
-
+if (process.argv.includes("--run")) {app.listen(PORT, () => { console.log(`Blockchain server is running at ${PORT}`)})}
 
 export {
     app
