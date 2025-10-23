@@ -3,7 +3,7 @@ import Validation from './validation';
 
 export default class Block {   // Iniciando a Classe Block
                               // Criação de seu Atributos
-    index: number;           // O Index é o numero referente a possição do Bloco na chain
+    index: number;           // O Index é o numero referente a posição do Bloco na chain
     timestamp: number;      // Otimestamp é uma representação numérica de um ponto no tempo, especificico refrente ao "Época do Unix" 
     hash: string;          // O hash é a impressão digital do bloco que garante sua segurança e ligação na blockchain.
     previousHash: string; // Cada bloco tem seu próprio hash e o hash do bloco anterior, o que mantém todos ligados e garante a segurança da blockchain. 

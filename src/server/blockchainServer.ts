@@ -6,7 +6,11 @@ import Block from '../lib/block';
 const PORT: number = 3000;
 
 const app = express();
-app.use(morgan('tiny'));
+
+if (process.argv.includes("--run")) {
+    app.use(morgan('tiny'));
+}
+
 app.use(express.json());
 
 const blockchain = new Blockchain();
@@ -21,12 +25,12 @@ app.get('/status', (req, res, next) => {
 
 app.get('/blocks/:indexOrHash', (req, res, next) => {
     let block;
-    if(/^[0-9]+$/.test(req.params.indexOrHash))
-    block = blockchain.blocks[parseInt(req.params.indexOrHash)];
+    if (/^[0-9]+$/.test(req.params.indexOrHash))
+        block = blockchain.blocks[parseInt(req.params.indexOrHash)];
     else
-    block = blockchain.getBlock(req.params.indexOrHash);
+        block = blockchain.getBlock(req.params.indexOrHash);
 
-    if(!block){
+    if (!block) {
         res.sendStatus(404);
     } else {
         res.json(block);
@@ -34,19 +38,26 @@ app.get('/blocks/:indexOrHash', (req, res, next) => {
 })
 
 app.post('/blocks', (req, res, next) => {
-    if(!req.body.hash === undefined) res.sendStatus(422);
+    if (!req.body.hash === undefined) res.sendStatus(422);
 
     const block = new Block(req.body as Block);
     const validation = blockchain.addBlock(block);
 
-    if(validation.success){
+    if (validation.success) {
         res.status(201).json(block);
     }
-    else{
+    else {
         res.status(400).json(validation);
     }
 })
 
-app.listen(PORT, () => {
-    console.log(`Blockchain server is running at ${PORT}`);
-})
+if (process.argv.includes("--run")) {
+    app.listen(PORT, () => {
+        console.log(`Blockchain server is running at ${PORT}`);
+    })
+}
+
+
+export {
+    app
+}
