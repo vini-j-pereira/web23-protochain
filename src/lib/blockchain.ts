@@ -21,7 +21,7 @@ export default class Blockchain {
     addBlock(block: Block) : Validation{
         const lastBlock = this.getLastBlock();
         
-        const validation = block.isValid(lastBlock.hash, lastBlock.index)
+        const validation = block.isValid(lastBlock.hash, lastBlock.index);
         if(!validation.success) 
             return new Validation(false, `Invalid block: ${validation.message}`);
 
