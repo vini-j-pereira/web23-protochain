@@ -1,6 +1,7 @@
 import { compile } from 'morgan';
 import Block from '../src/lib/block';
 import { describe, test, expect, beforeAll } from '@jest/globals';
+import BlockInfo from '../src/lib/blockInfo';
 
 
 describe("Block test", () => {
@@ -23,6 +24,21 @@ describe("Block test", () => {
             data: "block 2",
         } as Block);
         block.mine(exDifficulty, exMiner)
+        const valid = block.isValid(genesis.hash, genesis.index, exDifficulty);
+        expect(valid.success).toBeTruthy();
+    })
+
+    test("Should create from block info", () => {
+        const block = Block.fromBlockInfo({
+            data: "Block 2",
+            difficulty: exDifficulty,
+            feePerTx: 1,
+            index: 1,
+            maxDifficulty: 62,
+            previousHash: genesis.hash
+        } as BlockInfo)
+        block.mine(exDifficulty, exMiner)
+
         const valid = block.isValid(genesis.hash, genesis.index, exDifficulty);
         expect(valid.success).toBeTruthy();
     })
