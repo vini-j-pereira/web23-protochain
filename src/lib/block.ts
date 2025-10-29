@@ -20,7 +20,7 @@ export default class Block {   // Iniciando a Classe Block
         this.previousHash = block?.previousHash || "";
 
         this.transactions = block?.transactions
-            ? block?.transactions.map(tx => new Transaction(tx))
+            ? block.transactions.map(tx => new Transaction(tx))
             : [] as Transaction[];
 
         this.nonce = block?.nonce || 0;
@@ -54,12 +54,14 @@ export default class Block {   // Iniciando a Classe Block
             if (this.transactions.filter(tx => tx.type === TransactionType.FEE).length > 1) {
                 return new Validation(false, "Too may fees.");
             }
+                
 
             const validation = this.transactions.map(tx => tx.isValid());
             const errors = validation.filter(v => !v.success).map(v => v.message);
             if (errors.length > 0) {
                 return new Validation(false, "Invalid block due to invalid tx: " + errors.reduce((a, b) => a + b));
             }
+                
 
         }
 
@@ -85,7 +87,7 @@ export default class Block {   // Iniciando a Classe Block
         const block = new Block();
         block.index = blockInfo.index;
         block.previousHash = blockInfo.previousHash;
-        block.transactions = blockInfo.transaction;
+        block.transactions = blockInfo.transactions;
         return block;
     }
 }

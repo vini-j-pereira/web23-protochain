@@ -64,7 +64,7 @@ export default class Blockchain {
     }
 
     getNextBlock(): BlockInfo {
-        const transaction = [new Transaction({
+        const transactions = [new Transaction({
             data: new Date().toString()
         } as Transaction)];
 
@@ -74,7 +74,7 @@ export default class Blockchain {
         const feePerTx = this.getFeePerTx();
         const maxDifficulty = Blockchain.MAX_DIFICULTY;
         return{
-            transaction,
+            transactions,
             difficulty,
             previousHash,
             index,
