@@ -51,8 +51,18 @@ export default class Block {   // Iniciando a Classe Block
     isValid(previousHash: string, previuIndex: number, difficulty: number): Validation {
 
         if (this.transactions && this.transactions.length) {
-            if (this.transactions.filter(tx => tx.type === TransactionType.FEE).length > 1) {
+            const feeTxs = this.transactions.filter(tx => tx.type === TransactionType.FEE)
+
+            if(!feeTxs.length){
+                return new Validation(false, "No FEE TX")
+            }
+
+            if (feeTxs.length > 1) {
                 return new Validation(false, "Too may fees.");
+            }
+
+            if(feeTxs[0].to !== this.miner){
+                return new Validation(false, "Invalid fee tx: different from miner.");
             }
                 
 
@@ -87,7 +97,7 @@ export default class Block {   // Iniciando a Classe Block
         const block = new Block();
         block.index = blockInfo.index;
         block.previousHash = blockInfo.previousHash;
-        block.transactions = blockInfo.transactions;
+        block.transactions = blockInfo.transactions.map(tx => new Transaction(tx));
         return block;
     }
 }
