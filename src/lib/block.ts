@@ -61,11 +61,11 @@ export default class Block {   // Iniciando a Classe Block
                 return new Validation(false, "Too may fees.");
             }
 
-            if(feeTxs[0].to !== this.miner){
+            if(!feeTxs[0].txOutputs.some(txo => txo.toAddress === this.miner)){
                 return new Validation(false, "Invalid fee tx: different from miner.");
             }
                 
-
+            //TODO: colocar validação de quantidade de taxas
             const validation = this.transactions.map(tx => tx.isValid());
             const errors = validation.filter(v => !v.success).map(v => v.message);
             if (errors.length > 0) {
