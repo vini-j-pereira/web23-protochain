@@ -8,13 +8,19 @@ export default class Block {  // Criação da Classe Block
     hash: string;
     previousHash: string;
     transactions: Transaction[];
+    miner: string;
 
     constructor(block?: Block){ // O constructor serve para indicar como sera inicializado o nosso objeto  
         this.index = block?.index || 0;
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || "";
         this.transactions = block?.transactions || [] as Transaction[];
+        this.miner = block?.miner || "abc";
         this.hash = block?.hash || this.getHash();
+    }
+
+    mine(difficulty: number, miner: string){
+        this.miner = miner;
     }
 
     getHash(): string{
