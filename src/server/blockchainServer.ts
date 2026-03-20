@@ -7,6 +7,9 @@ import Blockchain from '../lib/blockchain';
 import Block from '../lib/block';
 import Transaction from '../lib/transaction';
 import Wallet from '../lib/wallet';
+import { json } from 'stream/consumers';
+import TransactionOutput from '../lib/transactionOutput';
+import { console } from 'inspector';
 
 /* c8 ignore start*/
 const PORT: number = parseInt(`${process.env.BLOCKCHAIN_PORT || 3000}`);
@@ -91,8 +94,18 @@ app.post('/transactions', (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
+app.get('/wallet/:wallet', (req: Request, res: Response, next: NextFunction) => {
+    const wallet = req.params.wallet;
+
+    const utxo = blockchain.getUtxo(wallet);
+    const balance = blockchain.getBalance(wallet);
+    const fee = blockchain.getFeePerTx();
+
+    return res.json({balance, fee, utxo})
+})
+
 /* c8 ignore start*/
-if (process.argv.includes("--run")) { app.listen(PORT, () => { console.log(`Blockchain server is running at ${PORT}`) }) }
+if (process.argv.includes("--run")) { app.listen(PORT, () => { console.log(`Blockchain server is running at ${PORT}. Wallet: ${wallet.publicKey}`) }) }
 /* c8 ignore stop*/
 export {
     app

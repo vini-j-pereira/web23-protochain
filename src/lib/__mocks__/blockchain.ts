@@ -5,6 +5,7 @@ import Transaction from "./transaction";
 import TransactionType from "../transactionType";
 import TransactionSearch from "../transactionSearch";
 import TransactionInput from "./transactionInput";
+import TransactionOutput from "./transactionOutput";
 
 export default class Blockchain {
     blocks: Block[];
@@ -81,5 +82,6 @@ export default class Blockchain {
         } as BlockInfo;
 
     }
+
 }
 
